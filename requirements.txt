@@ -1,0 +1,8 @@
+django
+requests
+pandas
+djangorestframework
+tensorflow
+numpy
+transformers
+
