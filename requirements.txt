@@ -7,6 +7,6 @@ nltk==3.8.1
 numpy==1.21.6
 paddlenlp==2.6.1
 paddlepaddle==2.5.2
-pandas==2.0.3
+pandas==1.3.5
 requests==2.31.0
 transformers==4.35.2
