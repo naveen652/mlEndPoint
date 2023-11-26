@@ -1,3 +1,4 @@
+pip==23.3.1
 Django==4.2.7
 django-restframework==0.0.1
 djangorestframework==3.14.0
