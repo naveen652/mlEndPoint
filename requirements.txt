@@ -1,3 +1,4 @@
+gunicorn==19.7.1
 pip==23.3.1
 Django==3.2.23
 django-restframework==0.0.1
