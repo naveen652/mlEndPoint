@@ -4,7 +4,7 @@ django-restframework==0.0.1
 djangorestframework==3.14.0
 huggingface-hub==0.16.4
 nltk==3.8.1
-numpy==1.24.3
+numpy==1.21.6
 paddlenlp==2.6.1
 paddlepaddle==2.5.2
 pandas==2.0.3
