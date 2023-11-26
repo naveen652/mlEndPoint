@@ -2,7 +2,7 @@ pip==23.3.1
 Django==3.2.23
 django-restframework==0.0.1
 djangorestframework==3.14.0
-huggingface-hub==0.19.4
+huggingface-hub==0.16.4
 nltk==3.8.1
 numpy==1.24.3
 paddlenlp==2.6.1
