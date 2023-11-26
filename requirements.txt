@@ -1,5 +1,5 @@
 pip==23.3.1
-Django==4.2.7
+Django==3.2.23
 django-restframework==0.0.1
 djangorestframework==3.14.0
 huggingface-hub==0.19.4
