@@ -57,7 +57,7 @@ def sentimentAnalysis(request, email):
         #questions_df = pd.DataFrame(questions_data)
         #concatinated text of questions and responses
         #questions_text = questions_df['Question'].str.cat(sep='\n')
-        response_text = responses_df['response'].str.cat(sep='\n ')
+        response_text = responses_df['response'].str.cat(sep='. ')
         #list of questions and responses
         #list_of_questions = questions_df['Question'].tolist()
         #list_of_responses = responses_df['response'].tolist()
