@@ -3,7 +3,7 @@ import requests
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from transformers import pipeline
-
+import torch
 
 # final model
 @api_view(['GET'])
