@@ -7,10 +7,6 @@ import paddle
 #from transformers import RobertaTokenizerFast, pipeline, RobertaForSequenceClassification
 
 # final model
-def analyze_sentiment_ernie(text):
-    
-
-    return sentiment_label, confidence_score
 
 @api_view(['GET'])
 def sentimentAnalysis(request, email):
