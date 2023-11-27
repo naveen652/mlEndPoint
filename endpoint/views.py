@@ -2,7 +2,9 @@ import pandas as pd
 import requests
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
-from transformers import RobertaTokenizerFast, pipeline, RobertaForSequenceClassification
+from paddlenlp.transformers import ErnieTokenizer, ErnieForSequenceClassification
+import paddle
+#from transformers import RobertaTokenizerFast, pipeline, RobertaForSequenceClassification
 
 # final model
 def analyze_sentiment_ernie(text):
@@ -59,8 +61,6 @@ def sentimentAnalysis(request, email):
         #list of questions and responses
         #list_of_questions = questions_df['Question'].tolist()
         #list_of_responses = responses_df['response'].tolist()
-        result=analyze_sentiment_ernie(response_text)
-        sentiment_label=result[0]['sentiment_label']
-        sentiment_score=result[0]['confidence_score']
+        sentiment_label,sentiment_score=analyze_sentiment_ernie(response_text)
         result_data={'unique id':unique_id,'name':name,'email':email,'sentiment':sentiment_label, 'score':sentiment_score*100,'suggestions':suggestions}
         return JsonResponse(result_data)
