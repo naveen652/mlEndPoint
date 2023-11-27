@@ -26,10 +26,7 @@ def sentimentAnalysis(request, email):
             responses_df = pd.DataFrame(responses_data)
             questions_data = d[0]['questions']
             response_text = responses_df['response'].str.cat(sep='. ')
-            model_path=f"cardiffnlp/twitter-roberta-base-sentiment-latest"
-            sentiment_task = pipeline("sentiment-analysis", model=model_path, tokenizer=model_path)
-            r=sentiment_task("Covid cases are increasing fast!")
-            result_data={'unique id':unique_id,'name':name,'email':email,'suggestions':suggestions}
+            result_data={'unique id':unique_id,'name':name,'email':email,'suggestions':suggestions, 'response':response_text}
             return JsonResponse(result_data)
         else:
             result_data={'unique id':unique_id,'name':name,'email':email,'sentiment':'no sentiment', 'score':0,'suggestions':suggestions}
