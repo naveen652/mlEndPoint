@@ -21,6 +21,9 @@ def sentimentAnalysis(request):
         unique_id=unique_id_response['UniqueId']
         suggestions="suggestions from genAI"
         responses_data = d[0]['responses']
+        if not responses_data:
+            result_data={'unique id':unique_id,'name':name,'email':email,'sentiment':'no sentiment', 'score':0,'suggestions':suggestions}
+            return JsonResponse(result_data)
         responses_df = pd.DataFrame(responses_data)
         questions_data = d[0]['questions']
         #questions_df = pd.DataFrame(questions_data)
