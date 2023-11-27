@@ -32,9 +32,9 @@ def sentimentAnalysis(request, email):
         #list of questions and responses
         #list_of_questions = questions_df['Question'].tolist()
         #list_of_responses = responses_df['response'].tolist()
-        tokenizer = RobertaTokenizerFast.from_pretrained("arpanghoshal/EmoRoBERTa")
-        model = RobertaForSequenceClassification.from_pretrained("arpanghoshal/EmoRoBERTa")
-        emotion = pipeline('sentiment-analysis', model='arpanghoshal/EmoRoBERTa')
+        tokenizer = RobertaTokenizerFast.from_pretrained("arpanghoshal/EmoRoBERTa",from_tf=True)
+        model = RobertaForSequenceClassification.from_pretrained("arpanghoshal/EmoRoBERTa",from_tf=True)
+        emotion = pipeline('sentiment-analysis', model='arpanghoshal/EmoRoBERTa',from_tf=True)
         result=emotion(response_text)
         sentiment_label=result[0]['label']
         sentiment_score=result[0]['score']
