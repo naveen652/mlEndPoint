@@ -8,7 +8,7 @@ from transformers import pipeline
 # final model
 @api_view(['GET'])
 def sentimentAnalysis(request, email):
-    response = requests.get('https://mindwellnesspro.onrender.com/userresponse/nadipilliharsha78@gmail.com')
+    response = requests.get('https://mindwellnesspro.onrender.com/userresponse/'+email)
     d = response.json()
     if not d:
         return JsonResponse({"response":"no data available"})
