@@ -4,5 +4,5 @@ from .views import sentimentAnalysis
 app_name = 'endpoint'
 
 urlpatterns = [
-    path('sentimentAnalysis/', sentimentAnalysis, name='sentimentAnalysis')
+    path('sentimentAnalysis/<str:email>', sentimentAnalysis, name='sentimentAnalysis')
 ]
