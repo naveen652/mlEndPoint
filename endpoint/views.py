@@ -3,7 +3,7 @@ import requests
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from transformers import RobertaTokenizerFast, TFRobertaForSequenceClassification, pipeline
-import torch
+import tensorflow
 
 # final model
 @api_view(['GET'])
