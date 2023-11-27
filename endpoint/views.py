@@ -31,6 +31,6 @@ def sentimentAnalysis(request, email):
             response_text = responses_df['response'].str.cat(sep='. ')
             model_path=f"cardiffnlp/twitter-roberta-base-sentiment-latest"
             sentiment_task = pipeline("sentiment-analysis", model=model_path, tokenizer=model_path)
-            sentiment_task("Covid cases are increasing fast!")
+            r=sentiment_task("Covid cases are increasing fast!")
             result_data={'unique id':unique_id,'name':name,'email':email,'suggestions':suggestions}
             return JsonResponse(result_data)
