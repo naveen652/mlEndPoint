@@ -2,7 +2,7 @@ import pandas as pd
 import requests
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
-from transformers import pipeline
+from transformers import RobertaTokenizerFast, TFRobertaForSequenceClassification, pipeline
 import torch
 
 # final model
@@ -33,8 +33,10 @@ def sentimentAnalysis(request, email):
         #list of questions and responses
         #list_of_questions = questions_df['Question'].tolist()
         #list_of_responses = responses_df['response'].tolist()
-        sentiment_analyzer = pipeline("sentiment-analysis",'arpanghoshal/EmoRoBERTa')
-        result = sentiment_analyzer(response_text)
+        tokenizer = RobertaTokenizerFast.from_pretrained("arpanghoshal/EmoRoBERTa")
+        model = TFRobertaForSequenceClassification.from_pretrained("arpanghoshal/EmoRoBERTa")
+        emotion = pipeline('sentiment-analysis', model='arpanghoshal/EmoRoBERTa')
+        result=emotion(response_text)
         sentiment_label=result[0]['label']
         sentiment_score=result[0]['score']
         result_data={'unique id':unique_id,'name':name,'email':email,'sentiment':sentiment_label, 'score':sentiment_score*100,'suggestions':suggestions}
