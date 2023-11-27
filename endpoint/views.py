@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from paddlenlp.transformers import ErnieTokenizer, ErnieForSequenceClassification
 import paddle
-#from transformers import RobertaTokenizerFast, pipeline, RobertaForSequenceClassification
+from transformers import pipeline
 
 # final model
 
@@ -36,7 +36,7 @@ def sentimentAnalysis(request, email):
         #list_of_questions = questions_df['Question'].tolist()
         #list_of_responses = responses_df['response'].tolist()
         # Load pre-trained ERNIE model and tokenizer
-        tokenizer = ErnieTokenizer.from_pretrained('ernie-1.0')
+        '''tokenizer = ErnieTokenizer.from_pretrained('ernie-1.0')
         model = ErnieForSequenceClassification.from_pretrained('ernie-1.0')
 
         # Tokenize the text
@@ -46,8 +46,7 @@ def sentimentAnalysis(request, email):
         # Make a prediction
         output = model(input_ids)
         logits = output.numpy()
-        result_data={'unique id':unique_id,'name':name,'email':email,'suggestions':suggestions}
-        return JsonResponse(result_data)
+        
         # Get the predicted class and score
         predicted_class = paddle.argmax(paddle.to_tensor(logits), axis=1).numpy().item()
         confidence_score = paddle.nn.functional.softmax(paddle.to_tensor(logits), axis=1).numpy()[0, predicted_class]
@@ -58,5 +57,9 @@ def sentimentAnalysis(request, email):
             1: 'Neutral',
             2: 'Positive'
         }
-        sentiment_label = sentiment_mapping.get(predicted_class, 'Unknown')
-        
+        sentiment_label = sentiment_mapping.get(predicted_class, 'Unknown')'''
+        model_path=f"cardiffnlp/twitter-roberta-base-sentiment-latest"
+        sentiment_task = pipeline("sentiment-analysis", model=model_path, tokenizer=model_path)
+        sentiment_task("Covid cases are increasing fast!")
+        result_data={'unique id':unique_id,'name':name,'email':email,'suggestions':suggestions}
+        return JsonResponse(result_data)
