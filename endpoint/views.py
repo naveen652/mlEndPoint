@@ -8,29 +8,7 @@ import paddle
 
 # final model
 def analyze_sentiment_ernie(text):
-    # Load pre-trained ERNIE model and tokenizer
-    tokenizer = ErnieTokenizer.from_pretrained('ernie-1.0')
-    model = ErnieForSequenceClassification.from_pretrained('ernie-1.0')
-
-    # Tokenize the text
-    input_ids = tokenizer(text)['input_ids']
-    input_ids = paddle.to_tensor([input_ids])
-
-    # Make a prediction
-    output = model(input_ids)
-    logits = output.numpy()
-
-    # Get the predicted class and score
-    predicted_class = paddle.argmax(paddle.to_tensor(logits), axis=1).numpy().item()
-    confidence_score = paddle.nn.functional.softmax(paddle.to_tensor(logits), axis=1).numpy()[0, predicted_class]
-
-    # Map numeric label to human-readable sentiment class
-    sentiment_mapping = {
-        0: 'Negative',
-        1: 'Neutral',
-        2: 'Positive'
-    }
-    sentiment_label = sentiment_mapping.get(predicted_class, 'Unknown')
+    
 
     return sentiment_label, confidence_score
 
@@ -61,6 +39,27 @@ def sentimentAnalysis(request, email):
         #list of questions and responses
         #list_of_questions = questions_df['Question'].tolist()
         #list_of_responses = responses_df['response'].tolist()
-        sentiment_label,sentiment_score=analyze_sentiment_ernie(response_text)
-        result_data={'unique id':unique_id,'name':name,'email':email,'sentiment':sentiment_label, 'score':sentiment_score*100,'suggestions':suggestions}
+        # Load pre-trained ERNIE model and tokenizer
+        tokenizer = ErnieTokenizer.from_pretrained('ernie-1.0')
+        model = ErnieForSequenceClassification.from_pretrained('ernie-1.0')
+
+        # Tokenize the text
+        input_ids = tokenizer(response_text)['input_ids']
+        input_ids = paddle.to_tensor([input_ids])
+
+        # Make a prediction
+        output = model(input_ids)
+        logits = output.numpy()
+        # Get the predicted class and score
+        predicted_class = paddle.argmax(paddle.to_tensor(logits), axis=1).numpy().item()
+        confidence_score = paddle.nn.functional.softmax(paddle.to_tensor(logits), axis=1).numpy()[0, predicted_class]
+
+        # Map numeric label to human-readable sentiment class
+        sentiment_mapping = {
+            0: 'Negative',
+            1: 'Neutral',
+            2: 'Positive'
+        }
+        sentiment_label = sentiment_mapping.get(predicted_class, 'Unknown')
+        result_data={'unique id':unique_id,'name':name,'email':email,'sentiment':sentiment_label, 'score':confidence_score,'suggestions':suggestions}
         return JsonResponse(result_data)
