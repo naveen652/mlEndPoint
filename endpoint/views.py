@@ -46,6 +46,8 @@ def sentimentAnalysis(request, email):
         # Make a prediction
         output = model(input_ids)
         logits = output.numpy()
+        result_data={'unique id':unique_id,'name':name,'email':email,'suggestions':suggestions}
+        return JsonResponse(result_data)
         # Get the predicted class and score
         predicted_class = paddle.argmax(paddle.to_tensor(logits), axis=1).numpy().item()
         confidence_score = paddle.nn.functional.softmax(paddle.to_tensor(logits), axis=1).numpy()[0, predicted_class]
@@ -57,5 +59,4 @@ def sentimentAnalysis(request, email):
             2: 'Positive'
         }
         sentiment_label = sentiment_mapping.get(predicted_class, 'Unknown')
-        result_data={'unique id':unique_id,'name':name,'email':email,'sentiment':sentiment_label, 'score':confidence_score,'suggestions':suggestions}
-        return JsonResponse(result_data)
+        
