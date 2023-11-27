@@ -2,7 +2,6 @@ import pandas as pd
 import requests
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
-from paddlenlp.transformers import ErnieTokenizer, ErnieForSequenceClassification
 import paddle
 from transformers import pipeline
 
