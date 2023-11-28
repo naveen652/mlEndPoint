@@ -3,9 +3,27 @@ import requests
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 import paddle
-from transformers import pipeline
-
+import nltk
+nltk.download('vader_lexicon')
+from nltk.sentiment import SentimentIntensityAnalyzer
 # final model
+
+def analyze_sentiment(text):
+    # Initialize the sentiment analyzer
+    sid = SentimentIntensityAnalyzer()
+
+    # Get the sentiment scores
+    sentiment_scores = sid.polarity_scores(text)
+
+    # Classify the sentiment
+    if sentiment_scores['compound'] >= 0.05:
+        sentiment = 'Positive'
+    elif sentiment_scores['compound'] <= -0.05:
+        sentiment = 'Negative'
+    else:
+        sentiment = 'Neutral'
+
+    return sentiment, sentiment_scores
 
 @api_view(['GET'])
 def sentimentAnalysis(request, email):
@@ -26,10 +44,9 @@ def sentimentAnalysis(request, email):
             responses_df = pd.DataFrame(responses_data)
             questions_data = d[0]['questions']
             response_text = responses_df['response'].str.cat(sep='. ')
-            model_path=f"cardiffnlp/twitter-roberta-base-sentiment-latest"
-            sentiment_task = pipeline("sentiment-analysis", model=model_path, tokenizer=model_path,device="cuda")
-            r=sentiment_task("Covid cases are increasing fast!")
-            result_data={'unique id':unique_id,'name':name,'email':email,'suggestions':suggestions, 'response':response_text}
+            text_to_analyze = "I am happy. I am satisfied with my personal life. I feel a sense of purpose in my daily activities. I engage in activities that bring joy and fulfillment. I am pessimistic about future. I  manage stress and challenges in life well."
+            sentiment, sentiment_score = analyze_sentiment(text_to_analyze)
+            result_data={'unique id':unique_id,'name':name,'email':email,'suggestions':suggestions, 'response':response_text, "sentiment":sentiment, "score": sentiment_score}
             return JsonResponse(result_data)
         else:
             result_data={'unique id':unique_id,'name':name,'email':email,'sentiment':'no sentiment', 'score':0,'suggestions':suggestions}
