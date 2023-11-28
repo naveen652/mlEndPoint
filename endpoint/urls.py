@@ -5,5 +5,5 @@ app_name = 'endpoint'
 
 urlpatterns = [
     path('sentimentAnalysis/<str:email>', sentimentAnalysis, name='sentimentAnalysis'),
-    path('', health, name='health)
+    path('', health, name='health')
 ]
