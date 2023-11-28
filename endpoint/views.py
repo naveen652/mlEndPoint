@@ -50,3 +50,6 @@ def sentimentAnalysis(request, email):
         else:
             result_data={'unique id':unique_id,'name':name,'email':email,'sentiment':'no sentiment', 'score':0,'suggestions':suggestions}
             return JsonResponse(result_data)
+@api_view(['GET'])
+def health(request):
+    return JsonResponse({'health':'healthy'})
