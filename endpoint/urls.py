@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import sentimentAnalysis
+from .views import *
 
 app_name = 'endpoint'
 
