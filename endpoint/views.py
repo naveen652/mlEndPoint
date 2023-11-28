@@ -22,8 +22,8 @@ def analyze_sentiment(text):
         sentiment = 'Negative'
     else:
         sentiment = 'Neutral'
-
-    return sentiment, sentiment_scores
+    compound_score=abs(sentiment_scores['compound']*100)
+    return sentiment, compound_score
 
 @api_view(['GET'])
 def sentimentAnalysis(request, email):
@@ -44,9 +44,8 @@ def sentimentAnalysis(request, email):
             responses_df = pd.DataFrame(responses_data)
             questions_data = d[0]['questions']
             response_text = responses_df['response'].str.cat(sep='. ')
-            text_to_analyze = "I am happy. I am satisfied with my personal life. I feel a sense of purpose in my daily activities. I engage in activities that bring joy and fulfillment. I am pessimistic about future. I  manage stress and challenges in life well."
-            sentiment, sentiment_score = analyze_sentiment(text_to_analyze)
-            result_data={'unique id':unique_id,'name':name,'email':email,'suggestions':suggestions, 'response':response_text, "sentiment":sentiment, "score": sentiment_score}
+            sentiment, sentiment_score = analyze_sentiment(response_text)
+            result_data={'unique id':unique_id,'name':name,'email':email,'suggestions':suggestions, "sentiment":sentiment, "score": sentiment_score, "status":1}
             return JsonResponse(result_data)
         else:
             result_data={'unique id':unique_id,'name':name,'email':email,'sentiment':'no sentiment', 'score':0,'suggestions':suggestions}
