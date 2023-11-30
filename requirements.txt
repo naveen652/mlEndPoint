@@ -1,7 +1,8 @@
+tensorflow==2.9.0
 django-cors-headers==4.1.0
-torch==1.13.1
-torchvision==0.14.1
-torchaudio==0.13.1
+#torch==1.13.1
+#torchvision==0.14.1
+#torchaudio==0.13.1
 protobuf==3.20.*
 gunicorn==19.7.1
 pip==23.3.1
@@ -9,7 +10,7 @@ Django==3.2.23
 django-restframework==0.0.1
 djangorestframework==3.14.0
 huggingface-hub==0.16.4
-nltk==3.8.1
+#nltk==3.8.1
 numpy==1.21.6
 paddlenlp==2.6.1
 paddlepaddle==2.5.2
@@ -17,4 +18,4 @@ pandas==1.3.5
 requests==2.31.0
 transformers==4.30.2
 paddlepaddle==2.5.2
-tensorflow==2.9.0
+
