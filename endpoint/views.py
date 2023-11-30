@@ -4,9 +4,20 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view
 import paddle
 import nltk
-nltk.download('vader_lexicon')
+from transformers import pipeline
+#nltk.download('vader_lexicon')
 from nltk.sentiment import SentimentIntensityAnalyzer
 # final model
+
+
+def analyze_sentiment_emoroberta(text):
+    sentiment_analyzer = pipeline("sentiment-analysis",'arpanghoshal/EmoRoBERTa')
+    result = sentiment_analyzer(text)
+    return result[0]['label'], result[0]['score']
+
+# Example usage
+text_to_analyze = "iam happy"
+sentiment_label, sentiment_score = analyze_sentiment(text_to_analyze)
 
 def analyze_sentiment(text):
     # Initialize the sentiment analyzer
@@ -44,7 +55,7 @@ def sentimentAnalysis(request, email):
             responses_df = pd.DataFrame(responses_data)
             questions_data = d[0]['questions']
             response_text = responses_df['response'].str.cat(sep='. ')
-            sentiment, sentiment_score = analyze_sentiment(response_text)
+            sentiment, sentiment_score = analyze_sentiment_emoroberta(response_text)
             result_data={'unique id':unique_id,'name':name,'email':email,'suggestions':suggestions, "sentiment":sentiment, "score": sentiment_score, "status":1}
             return JsonResponse(result_data)
         else:
