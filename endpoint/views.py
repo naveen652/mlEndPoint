@@ -9,7 +9,6 @@ from transformers import RobertaTokenizerFast, TFRobertaForSequenceClassificatio
 #from nltk.sentiment import SentimentIntensityAnalyzer
 # final model
 
-
 def query(payload, API_URL, headers):
 	response = requests.post(API_URL, headers=headers, json=payload)
 	return response.json()
@@ -19,7 +18,7 @@ def sentimentAnalysis(request, email, id):
     response = requests.get('https://mindwellnesspro.onrender.com/userresponse/'+email)
     d = response.json()
     if not d:
-        return JsonResponse({"response":"no data available"})
+        return JsonResponse({"error":"no data available"})
     #df_json = pd.DataFrame.from_dict(data)
     else:
         name=d[0]['name']
@@ -31,7 +30,7 @@ def sentimentAnalysis(request, email, id):
             unique_id_response = unique_id_data.json()
             unique_id=unique_id_response['UniqueId']
             responses_df = pd.DataFrame(responses_data)
-            questions_data = d[0]['questions']
+            #questions_data = d[0]['questions']
             response_text = responses_df['response'].str.cat(sep='. ')
             if(id==0):
 	    	API_URL = "https://api-inference.huggingface.co/models/finiteautomata/bertweet-base-sentiment-analysis"
@@ -41,13 +40,13 @@ def sentimentAnalysis(request, email, id):
 		return JsonResponse({'error':'invalid id, choose id 0 for specific test and 1 for neutral test'})
             headers = {"Authorization": "Bearer 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"}
             output = query({"inputs": response_text,}, API_URL, headers)
-            sentiment=output[0][0]['label']
-            sentiment_score=output[0][0]['score']
-            result_data={'unique id':unique_id,'name':name,'email':email,'suggestions':suggestions, "sentiment":sentiment, "score": sentiment_score, "status":1}
+            sentiments_scores=output[0]
+            result_data={'unique id':unique_id,'name':name,'email':email,'suggestions':suggestions, "sentiment":sentiment, "sentiments_scores": sentiments_scores, "status":1}
             return JsonResponse(result_data)
         else:
-            result_data={'unique id':unique_id,'name':name,'email':email,'sentiment':'no sentiment', 'score':0,'suggestions':suggestions}
+            result_data={'name':name,'email':email, 'error':'no responses'}
             return JsonResponse(result_data)
+
 @api_view(['GET'])
 def health(request):
     return JsonResponse({'health':'healthy'})
