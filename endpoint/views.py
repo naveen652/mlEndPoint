@@ -19,6 +19,10 @@ def analyze_sentiment_emoroberta(text):
     result = pipeline("sentiment-analysis", model=model_path, tokenizer=model_path)'''
     return result[0]['label'], result[0]['score']
 
+def query(payload):
+	response = requests.post(API_URL, headers=headers, json=payload)
+	return response.json()
+
 def analyze_sentiment(text):
     # Initialize the sentiment analyzer
     sid = SentimentIntensityAnalyzer()
@@ -55,7 +59,11 @@ def sentimentAnalysis(request, email):
             responses_df = pd.DataFrame(responses_data)
             questions_data = d[0]['questions']
             response_text = responses_df['response'].str.cat(sep='. ')
-            sentiment, sentiment_score = analyze_sentiment_emoroberta(response_text)
+            API_URL = "https://api-inference.huggingface.co/models/finiteautomata/bertweet-base-sentiment-analysis"
+            headers = {"Authorization": "Bearer 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"}
+            output = query({"inputs": response_text,})
+            sentiment=output[0][0]['label']
+            sentiment_score=output[0][0]['score']
             result_data={'unique id':unique_id,'name':name,'email':email,'suggestions':suggestions, "sentiment":sentiment, "score": sentiment_score, "status":1}
             return JsonResponse(result_data)
         else:
