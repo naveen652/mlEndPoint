@@ -33,9 +33,9 @@ def sentimentAnalysis(request, email, id):
             #questions_data = d[0]['questions']
             response_text = responses_df['response'].str.cat(sep='. ')
             if(id==0):
-	    	API_URL = "https://api-inference.huggingface.co/models/finiteautomata/bertweet-base-sentiment-analysis"
+		API_URL = "https://api-inference.huggingface.co/models/finiteautomata/bertweet-base-sentiment-analysis"
 	    else if(id==1):
-		API_URL = "https://api-inference.huggingface.co/models/arpanghoshal/EmoRoBERTa"
+  		API_URL = "https://api-inference.huggingface.co/models/arpanghoshal/EmoRoBERTa"
 	    else:
 		return JsonResponse({'error':'invalid id, choose id 0 for specific test and 1 for neutral test'})
             headers = {"Authorization": "Bearer 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"}
