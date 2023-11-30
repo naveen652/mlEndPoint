@@ -4,15 +4,19 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view
 import paddle
 #import nltk
-from transformers import pipeline
+from transformers import RobertaTokenizerFast, TFRobertaForSequenceClassification, pipeline
 #nltk.download('vader_lexicon')
 #from nltk.sentiment import SentimentIntensityAnalyzer
 # final model
 
 
 def analyze_sentiment_emoroberta(text):
-    model_path=f"cardiffnlp/twitter-roberta-base-sentiment-latest"
-    result = pipeline("sentiment-analysis", model=model_path, tokenizer=model_path)
+    tokenizer=RobertaTokenizerFast.from_pretrained("arpanghoshal/EmoRoBERTa")
+    model = TFRobertaForSequenceClassification.from_pretrained("arpanghoshal/EmoRoBERTa")
+    emotion = pipeline('sentiment-analysis', model='arpanghoshal/EmoRoBERTa')
+    result = emotion("Thanks for using it.")
+    '''model_path=f"cardiffnlp/twitter-roberta-base-sentiment-latest"
+    result = pipeline("sentiment-analysis", model=model_path, tokenizer=model_path)'''
     return result[0]['label'], result[0]['score']
 
 def analyze_sentiment(text):
