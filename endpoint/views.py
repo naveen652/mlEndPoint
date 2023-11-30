@@ -35,12 +35,12 @@ def sentimentAnalysis(request, email):
     else:
         name=d[0]['name']
         email=d[0]['email']
-        unique_id_data = requests.post('https://mindwellnesspro.onrender.com/reports/'+email+"/")
-        unique_id_response = unique_id_data.json()
-        unique_id=unique_id_response['UniqueId']
         suggestions="suggestions from genAI"
         responses_data = d[0]['responses']
         if responses_data:
+            unique_id_data = requests.post('https://mindwellnesspro.onrender.com/reports/'+email+"/")
+            unique_id_response = unique_id_data.json()
+            unique_id=unique_id_response['UniqueId']
             responses_df = pd.DataFrame(responses_data)
             questions_data = d[0]['questions']
             response_text = responses_df['response'].str.cat(sep='. ')
