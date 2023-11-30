@@ -15,10 +15,6 @@ def analyze_sentiment_emoroberta(text):
     result = sentiment_analyzer(text)
     return result[0]['label'], result[0]['score']
 
-# Example usage
-text_to_analyze = "iam happy"
-sentiment_label, sentiment_score = analyze_sentiment(text_to_analyze)
-
 def analyze_sentiment(text):
     # Initialize the sentiment analyzer
     sid = SentimentIntensityAnalyzer()
