@@ -10,38 +10,12 @@ from transformers import RobertaTokenizerFast, TFRobertaForSequenceClassificatio
 # final model
 
 
-def analyze_sentiment_emoroberta(text):
-    tokenizer=RobertaTokenizerFast.from_pretrained("arpanghoshal/EmoRoBERTa")
-    model = TFRobertaForSequenceClassification.from_pretrained("arpanghoshal/EmoRoBERTa")
-    emotion = pipeline('sentiment-analysis', model='arpanghoshal/EmoRoBERTa')
-    result = emotion("Thanks for using it.")
-    '''model_path=f"cardiffnlp/twitter-roberta-base-sentiment-latest"
-    result = pipeline("sentiment-analysis", model=model_path, tokenizer=model_path)'''
-    return result[0]['label'], result[0]['score']
-
 def query(payload, API_URL, headers):
 	response = requests.post(API_URL, headers=headers, json=payload)
 	return response.json()
 
-def analyze_sentiment(text):
-    # Initialize the sentiment analyzer
-    sid = SentimentIntensityAnalyzer()
-
-    # Get the sentiment scores
-    sentiment_scores = sid.polarity_scores(text)
-
-    # Classify the sentiment
-    if sentiment_scores['compound'] >= 0.05:
-        sentiment = 'Positive'
-    elif sentiment_scores['compound'] <= -0.05:
-        sentiment = 'Negative'
-    else:
-        sentiment = 'Neutral'
-    compound_score=abs(sentiment_scores['compound']*100)
-    return sentiment, compound_score
-
 @api_view(['GET'])
-def sentimentAnalysis(request, email):
+def sentimentAnalysis(request, email, id):
     response = requests.get('https://mindwellnesspro.onrender.com/userresponse/'+email)
     d = response.json()
     if not d:
@@ -59,7 +33,12 @@ def sentimentAnalysis(request, email):
             responses_df = pd.DataFrame(responses_data)
             questions_data = d[0]['questions']
             response_text = responses_df['response'].str.cat(sep='. ')
-            API_URL = "https://api-inference.huggingface.co/models/finiteautomata/bertweet-base-sentiment-analysis"
+            if(id==0):
+	    	API_URL = "https://api-inference.huggingface.co/models/finiteautomata/bertweet-base-sentiment-analysis"
+	    else if(id==1):
+		API_URL = "https://api-inference.huggingface.co/models/arpanghoshal/EmoRoBERTa"
+	    else:
+		return JsonResponse({'error':'invalid id, choose id 0 for specific test and 1 for neutral test'})
             headers = {"Authorization": "Bearer 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"}
             output = query({"inputs": response_text,}, API_URL, headers)
             sentiment=output[0][0]['label']
