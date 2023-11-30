@@ -11,8 +11,8 @@ from nltk.sentiment import SentimentIntensityAnalyzer
 
 
 def analyze_sentiment_emoroberta(text):
-    sentiment_analyzer = pipeline("sentiment-analysis",'arpanghoshal/EmoRoBERTa')
-    result = sentiment_analyzer(text)
+    model_path=f"cardiffnlp/twitter-roberta-base-sentiment-latest"
+    result = pipeline("sentiment-analysis", model=model_path, tokenizer=model_path)
     return result[0]['label'], result[0]['score']
 
 def analyze_sentiment(text):
