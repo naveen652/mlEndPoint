@@ -3,10 +3,10 @@ import requests
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 import paddle
-import nltk
+#import nltk
 from transformers import pipeline
 #nltk.download('vader_lexicon')
-from nltk.sentiment import SentimentIntensityAnalyzer
+#from nltk.sentiment import SentimentIntensityAnalyzer
 # final model
 
 
