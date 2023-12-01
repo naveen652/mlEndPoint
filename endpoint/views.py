@@ -9,7 +9,13 @@ from transformers import RobertaTokenizerFast, TFRobertaForSequenceClassificatio
 #from nltk.sentiment import SentimentIntensityAnalyzer
 # final model
 
-def query(payload, API_URL, headers):
+def query(payload, id, headers):
+	if(id==0):
+		API_URL = "https://api-inference.huggingface.co/models/finiteautomata/bertweet-base-sentiment-analysis"
+	else if(id==1):
+		API_URL = "https://api-inference.huggingface.co/models/arpanghoshal/EmoRoBERTa"
+	else:
+		return JsonResponse({'error':'invalid id, choose id 0 for specific test and 1 for neutral test'})
 	response = requests.post(API_URL, headers=headers, json=payload)
 	return response.json()
 
@@ -32,14 +38,8 @@ def sentimentAnalysis(request, email, id):
             		responses_df = pd.DataFrame(responses_data)
             		#questions_data = d[0]['questions']
             		response_text = responses_df['response'].str.cat(sep='. ')
-            		if(id==0):
-				API_URL = "https://api-inference.huggingface.co/models/finiteautomata/bertweet-base-sentiment-analysis"
-	    		else if(id==1):
-  				API_URL = "https://api-inference.huggingface.co/models/arpanghoshal/EmoRoBERTa"
-	    		else:
-				return JsonResponse({'error':'invalid id, choose id 0 for specific test and 1 for neutral test'})
             		headers = {"Authorization": "Bearer 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"}
-            		output = query({"inputs": response_text,}, API_URL, headers)
+            		output = query({"inputs": response_text,}, id, headers)
             		sentiments_scores=output[0]
             		result_data={'unique id':unique_id,'name':name,'email':email,'suggestions':suggestions, "sentiment":sentiment, "sentiments_scores": sentiments_scores, "status":1}
             		return JsonResponse(result_data)
