@@ -20,7 +20,7 @@ def query(payload, API_URL, headers):
 	return response.json()
 
 @api_view(['GET'])
-def sentimentAnalysis(request, email, id):
+def sentimentAnalysis(request, email):
     	response = requests.get('https://mindwellnesspro.onrender.com/userresponse/'+email)
     	d = response.json()
     	if not d:
