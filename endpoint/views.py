@@ -39,7 +39,7 @@ def sentimentAnalysis(request, email):
             		#questions_data = d[0]['questions']
             		response_text = responses_df['response'].str.cat(sep='. ')
 			API_URL = "https://api-inference.huggingface.co/models/finiteautomata/bertweet-base-sentiment-analysis"
-            		headers = {"Authorization": "Bearer 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"}
+			headers = {"Authorization": "Bearer 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"}
             		output = query({"inputs": response_text,},API_URL, headers)
             		sentiments_scores=output[0]
             		result_data={'unique id':unique_id,'name':name,'email':email,'suggestions':suggestions, "sentiment":sentiment, "sentiments_scores": sentiments_scores, "status":1}
