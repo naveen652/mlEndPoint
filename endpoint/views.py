@@ -20,7 +20,7 @@ def query(payload, API_URL, headers):
 	return response.json()
 
 @api_view(['GET'])
-def sentimentAnalysis(request, email):
+def sentimentAnalysis(request, id, email):
   response = requests.get('https://mindwellnesspro.onrender.com/userresponse/'+email)
   d = response.json()
   if not d:
@@ -38,16 +38,20 @@ def sentimentAnalysis(request, email):
       responses_df = pd.DataFrame(responses_data)
       #questions_data = d[0]['questions']
       response_text = responses_df['response'].str.cat(sep='. ')
-      API_URL = "https://api-inference.huggingface.co/models/finiteautomata/bertweet-base-sentiment-analysis"
+      if(id==0):
+        API_URL = "https://api-inference.huggingface.co/models/finiteautomata/bertweet-base-sentiment-analysis"
+      else if(id==1):
+        API_URL = "https://api-inference.huggingface.co/models/arpanghoshal/EmoRoBERTa"
+      else:
+        return JsonResponse({'error':'invalid id, choose id 0 for specific test and 1 for neutral test'})
       headers = {"Authorization": "Bearer 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"}
       output = query({"inputs": response_text,},API_URL, headers)
       sentiments_scores=output[0]
-      result_data={'unique id':unique_id,'name':name,'email':email,'suggestions':suggestions, "sentiments_scores": sentiments_scores, "status":1}
+      result_data={'unique id':unique_id,'name':name,'email':email,'suggestions':suggestions, "sentiment":sentiment, "sentiments_scores": sentiments_scores, "status":1}
       return JsonResponse(result_data)
     else:
       result_data={'name':name,'email':email, 'error':'no responses'}
       return JsonResponse(result_data)
-
 @api_view(['GET'])
 def health(request):
 	return JsonResponse({'health':'healthy'})
