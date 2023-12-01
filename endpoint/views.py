@@ -47,7 +47,7 @@ def sentimentAnalysis(request, id, email):
       headers = {"Authorization": "Bearer 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"}
       output = query({"inputs": response_text,},API_URL, headers)
       sentiments_scores=output[0]
-      result_data={'unique id':unique_id,'name':name,'email':email,'suggestions':suggestions, "sentiment":sentiment, "sentiments_scores": sentiments_scores, "status":1}
+      result_data={'unique id':unique_id,'name':name,'email':email,'suggestions':suggestions, "sentiments_scores": sentiments_scores, "status":1}
       return JsonResponse(result_data)
     else:
       result_data={'name':name,'email':email, 'error':'no responses'}
