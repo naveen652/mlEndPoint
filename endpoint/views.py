@@ -43,14 +43,14 @@ def sentimentAnalysis(request, id, email):
         return JsonResponse({'error':'invalid id, choose id 0 for specific test and 1 for neutral test'})
       headers = {"Authorization": "Bearer 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"}
       output = query({"inputs": response_text,},API_URL, headers)
-      sentiments_scores=output[0]
+      sentiments_scores=output
       positive=sentiments_scores[0]['score']
       neutral=sentiments_scores[1]['score']
       negative=sentiments_scores[2]['score']
       prompt = 'hi, i have taken mental health assesment on ["depression"], evaluated by machine learning model.analyse my answers to questions and individual scores i got in the assesment and provide me with some suggestions so that i can improve my mental health. In that assesment i got positive score of '+str(positive)+', negative score of '+str(negative)+'and neutral score of '+str(neutral)+'out of 100%. these are the list of questions in the assesment:' +str(list_of_questions)+ 'and these are the list of responses i have given for those list of questions:'+str(list_of_responses)
       completion = palm.generate_text(model=model,prompt=prompt)
       suggestions=completion.result
-      result_data={'unique id':unique_id,'name':name,'email':email,'suggestions':suggestions, "sentiments_scores": sentiments_scores, "status":1}
+      result_data={'unique id':unique_id,'name':name,'email':email,'suggestions':suggestions, "sentiments_scores": sentiments_scores[0], "status":1}
       return JsonResponse(result_data)
     else:
       result_data={'name':name,'email':email, 'error':'no responses'}
