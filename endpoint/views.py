@@ -57,7 +57,7 @@ def sentimentAnalysis(request, id, email):
       return JsonResponse(result_data)
 @api_view(['GET'])
 def health(request):
-	return JsonResponse({'health':'healthy'})
+	return JsonResponse({'health':'server is up'})
 
 @api_view(['GET'])
 def healthly(request):
