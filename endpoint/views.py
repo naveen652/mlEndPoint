@@ -47,8 +47,10 @@ def sentimentAnalysis(request, id, email):
       positive=sentiments_scores[0][0]['score']
       neutral=sentiments_scores[0][1]['score']
       negative=sentiments_scores[0][2]['score']
-      prompt = 'hi, i have taken mental health assesment on ["depression"], evaluated by machine learning model.analyse my answers to questions and individual scores i got in the assesment and provide me with some suggestions so that i can improve my mental health. In that assesment i got positive score of '+str(positive)+', negative score of '+str(negative)+'and neutral score of '+str(neutral)+'out of 100%. these are the list of questions in the assesment:' +str(list_of_questions)+ 'and these are the list of responses i have given for those list of questions:'+str(list_of_responses)
-      completion = palm.generate_text(model=model,prompt=prompt)
+prompt = f"Hi, I've recently completed a mental health assessment focusing on 'depression' and received scores indicating Positive: {positive}, Negative: {negative}, and Neutral: {neutral} out of 100%. I'm seeking guidance and suggestions to enhance my mental well-being based on my assessment. Here's a summary of the assessment: {list_of_questions}. My responses to these questions were: {list_of_responses}."
+ 
+
+completion = palm.generate_text(model=model,prompt=prompt)
       suggestions=completion.result
       result_data={'unique id':unique_id,'name':name,'email':email,'suggestions':suggestions, "sentiments_scores": sentiments_scores[0], "status":1}
       return JsonResponse(result_data)
