@@ -22,6 +22,7 @@ def sentimentAnalysis(request, id, email):
     name=d[0]['name']
     email=d[0]['email']
     responses_data = d[0]['responses']
+    category =  d[0]['category']
     if responses_data:
       palm.configure(api_key='AIzaSyACs8z3ksFw7CKmiPDFEpxDZ3Rhw4vymRM')
       models = [m for m in palm.list_models() if 'generateText' in m.supported_generation_methods]
@@ -47,7 +48,7 @@ def sentimentAnalysis(request, id, email):
       positive=sentiments_scores[0][0]['score']
       neutral=sentiments_scores[0][1]['score']
       negative=sentiments_scores[0][2]['score']
-      prompt = 'hi, i have taken mental health assesment on ["depression"], evaluated by machine learning model.analyse my answers to questions and individual scores i got in the assesment and provide me with some suggestions so that i can improve my mental health. In that assesment i got positive score of '+str(positive)+', negative score of '+str(negative)+'and neutral score of '+str(neutral)+'out of 100%. these are the list of questions in the assesment:' +str(list_of_questions)+ 'and these are the list of responses i have given for those list of questions:'+str(list_of_responses)
+      prompt = 'hi, i have taken mental health assesment on  ["category"], evaluated by machine learning model.analyse my answers to questions and individual scores i got in the assesment and provide me with some suggestions so that i can improve my mental health. In that assesment i got positive score of '+str(positive)+', negative score of '+str(negative)+'and neutral score of '+str(neutral)+'out of 100%. these are the list of questions in the assesment:' +str(list_of_questions)+ 'and these are the list of responses i have given for those list of questions:'+str(list_of_responses)
       completion = palm.generate_text(model=model,prompt=prompt)
       suggestions=completion.result
       result_data={'unique id':unique_id,'name':name,'email':email,'suggestions':suggestions, "sentiments_scores": sentiments_scores[0], "status":1}
