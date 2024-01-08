@@ -24,8 +24,6 @@ def sentimentAnalysis(request, id, email):
     responses_data = d[0]['responses']
     if responses_data:
       palm.configure(api_key='AIzaSyACs8z3ksFw7CKmiPDFEpxDZ3Rhw4vymRM')
-      models = [m for m in palm.list_models() if 'generateText' in m.supported_generation_methods]
-      model = models[0].name
       unique_id_data = requests.post('https://mindwellnesspro.onrender.com/reports/'+email+"/")
       unique_id_response = unique_id_data.json()
       unique_id=unique_id_response['UniqueId']
@@ -50,8 +48,8 @@ def sentimentAnalysis(request, id, email):
       neutral=sentiments_scores[0][1]['score']
       negative=sentiments_scores[0][2]['score']
       prompt = 'hi, i have taken mental health assesment on '+category+', evaluated by machine learning model.analyse my answers to questions and individual scores i got in the assesment and provide me with some suggestions so that i can improve my mental health. In that assesment i got positive score of '+str(positive)+', negative score of '+str(negative)+'and neutral score of '+str(neutral)+'out of 100%. these are the list of questions in the assesment:' +str(list_of_questions)+ 'and these are the list of responses i have given for those list of questions:'+str(list_of_responses)+'and these are the list of descriptions i have given for those list of questions:'+str(list_of_texts)+'please consider my list of responses and also my list of descriptions for giving suggestions.'
-      completion = palm.generate_text(model=model,prompt=prompt)
-      suggestions=completion.result
+      completion = palm.chat(messages=prompt)
+      suggestions=completion.last
       result_data={'unique id':unique_id,'name':name,'email':email,'suggestions':suggestions, "sentiments_scores": sentiments_scores, "status":1}
       return JsonResponse(result_data)
     else:
