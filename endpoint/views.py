@@ -38,7 +38,7 @@ def sentimentAnalysis(request, id, email):
       list_of_texts = responses_df['text'].tolist()
       response_text = responses_df['response'].str.cat(sep='. ')
       if(id==0):
-        API_URL = "https://api-inference.huggingface.co/models/finiteautomata/bertweet-base-sentiment-analysis"
+        API_URL = "https://api-inference.huggingface.co/models/ProsusAI/finbert"
       elif(id==1):
         API_URL = "https://api-inference.huggingface.co/models/arpanghoshal/EmoRoBERTa"
       else:
