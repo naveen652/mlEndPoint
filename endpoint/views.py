@@ -16,7 +16,7 @@ def sentimentAnalysis(request, id, email):
   response = requests.get('https://mindwellnesspro.onrender.com/userresponse/'+email)
   d = response.json()
   if not d:
-    output= "error: no data available"
+    return JsonResponse({"error: no data available"})
     #df_json = pd.DataFrame.from_dict(data)
   else:
     name=d[0]['name']
