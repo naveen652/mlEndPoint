@@ -13,7 +13,7 @@ def query(payload, API_URL, headers):
 
 @api_view(['GET'])
 def sentimentAnalysis(request, id, email):
-  response = requests.get('https://mindwellnesspro.onrender.com/userresponse/'+email)
+  response = requests.get('https://mindwellnesspro.onrender.com/userresponse/'+email+"/)
   try:
     d = response.json()
   except TypeError:
@@ -41,11 +41,11 @@ def sentimentAnalysis(request, id, email):
       response_text = responses_df['response'].str.cat(sep='. ')
       input=response_text+description_text
       if(id==0):
-        API_URL = "https://api-inference.huggingface.co/models/ProsusAI/finbert"
+        API_URL = "https://api-inference.huggingface.co/models/j-hartmann/sentiment-roberta-large-english-3-classes"
       elif(id==1):
         API_URL = "https://api-inference.huggingface.co/models/arpanghoshal/EmoRoBERTa"
       else:
-        return JsonResponse({'error':'invalid id, choose id 0 for specific test and 1 for neutral test'})
+        return JsonResponse({'error':'invalid id, choose id 0 for specific test and 1 for general test'})
       headers = {"Authorization": "Bearer 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"}
       output = query({"inputs": input,},API_URL, headers)
       sentiments_scores=output
