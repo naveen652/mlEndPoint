@@ -13,7 +13,7 @@ def query(payload, API_URL, headers):
 
 @api_view(['GET'])
 def sentimentAnalysis(request, id, email):
-  response = requests.get('https://mindwellnesspro.onrender.com/userresponse/'+email+"/)
+  response = requests.get('https://mindwellnesspro.onrender.com/userresponse/'+email+'/')
   try:
     d = response.json()
   except TypeError:
