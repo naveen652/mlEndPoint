@@ -13,11 +13,11 @@ def query(payload, API_URL, headers):
 
 @api_view(['GET'])
 def sentimentAnalysis(request, id, email):
+  response = requests.get('https://mindwellnesspro.onrender.com/userresponse/'+email)
   try:
-    response = requests.get('https://mindwellnesspro.onrender.com/userresponse/'+email)
+    d = response.json()
   except TypeError:
     return JsonResponse({"error: no data with this email address found please check email address again.."})
-  d = response.json()
   if not d:
     return JsonResponse({"error: no data available"})
     #df_json = pd.DataFrame.from_dict(data)
