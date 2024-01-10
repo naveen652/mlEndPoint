@@ -34,7 +34,9 @@ def sentimentAnalysis(request, id, email):
       list_of_questions = questions_df['Question'].tolist()
       list_of_responses = responses_df['response'].tolist()
       list_of_texts = responses_df['text'].tolist()
+      description_text=responses_df['text'].str.cat(sep='. ')
       response_text = responses_df['response'].str.cat(sep='. ')
+      input=response_text+description_text
       if(id==0):
         API_URL = "https://api-inference.huggingface.co/models/ProsusAI/finbert"
       elif(id==1):
@@ -42,7 +44,7 @@ def sentimentAnalysis(request, id, email):
       else:
         return JsonResponse({'error':'invalid id, choose id 0 for specific test and 1 for neutral test'})
       headers = {"Authorization": "Bearer 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"}
-      output = query({"inputs": response_text,},API_URL, headers)
+      output = query({"inputs": input,},API_URL, headers)
       sentiments_scores=output
       positive=sentiments_scores[0][0]['score']
       neutral=sentiments_scores[0][1]['score']
