@@ -5,7 +5,7 @@ django-cors-headers==4.1.0
 #torchaudio==0.13.1
 protobuf==4.25.1
 gunicorn==21.2.0
-pip==23.3.1
+pip==24.2
 Django==3.2.23
 django-restframework==0.0.1
 djangorestframework==3.14.0
